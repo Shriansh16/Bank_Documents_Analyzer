@@ -1,0 +1,120 @@
+Page 1:
+```json
+{
+  "documentType": "Bank Statement",
+  "bankName": "Your Bank",
+  "bankAddress": "16 High Street. Anytown, Anyshire YZ99 1XY",
+  "accountName": "Mr John Smith",
+  "accountType": "Checking",
+  "accountNumber": "99988877",
+  "statementPeriod": "1 February to 1 March, 2019",
+  "accountSummary": {
+    "balanceAt1February": "£40,000.00",
+    "totalMoneyIn": "£5,474.00",
+    "totalMoneyOut": "£1,395.17",
+    "balanceAt1March": "£44.079.83"
+  },
+  "transactions": [
+    {
+      "date": "1 February",
+      "description": "Balance brought forward",
+      "moneyOut": null,
+      "moneyIn": null,
+      "balance": "40,000.00"
+    },
+    {
+      "date": "1 February",
+      "description": "Cardpayment - High St Petrol Station",
+      "moneyOut": "24.50",
+      "moneyIn": null,
+      "balance": "39,975.50"
+    },
+    {
+      "date": "1 February",
+      "description": "Direct debit - Green Mobile Phone Bill",
+      "moneyOut": "20.00",
+      "moneyIn": null,
+      "balance": "39,955.50"
+    },
+    {
+      "date": "3 February",
+      "description": "Cash Withdrawal - YourBank, Anytown High Street, timed 17:30 31 Jan",
+      "moneyOut": "30.00",
+      "moneyIn": null,
+      "balance": "39,925.50"
+    },
+    {
+      "date": "4 February",
+      "description": "YourJob BiWeekly Payment",
+      "moneyOut": null,
+      "moneyIn": "2,575.00",
+      "balance": "42,500.50"
+    },
+    {
+      "date": "11 February",
+      "description": "Direct Deposit - YourBank, Anytown High Street, timed 17:30 31 Jan",
+      "moneyOut": null,
+      "moneyIn": "300.00",
+      "balance": "42,800.50"
+    },
+    {
+      "date": "16 February",
+      "description": "Cash Withdrawal - RandomBank, Randomford, timed 9.52 14 Feb",
+      "moneyOut": "50.00",
+      "moneyIn": null,
+      "balance": "42,750.50"
+    },
+    {
+      "date": "17 February",
+      "description": "Card payment - High St Petrol Station\nDirect Debit - Home Insurance",
+      "moneyOut": "40.00",
+      "moneyIn": null,
+      "balance": "42,710.50"
+    },
+    {
+      "date": "17 February",
+      "description": "Direct Debit - Home Insurance",
+      "moneyOut": "78.34",
+      "moneyIn": null,
+      "balance": "42,632.16"
+    },
+    {
+      "date": "18 February",
+      "description": "YourJob BiWeekly Payment",
+      "moneyOut": null,
+      "moneyIn": "2,575.00",
+      "balance": "45,207.16"
+    },
+    {
+      "date": "18 February",
+      "description": "Randomford's Deli",
+      "moneyOut": "15.00",
+      "moneyIn": null,
+      "balance": "45,195.16"
+    },
+    {
+      "date": "24 February",
+      "description": "Anytown's Jewelers",
+      "moneyOut": "150.00",
+      "moneyIn": null,
+      "balance": "45,042.16"
+    },
+    {
+      "date": "24 February",
+      "description": "Direct Deposit",
+      "moneyOut": null,
+      "moneyIn": "25.00",
+      "balance": "45,067.16"
+    },
+    {
+      "date": "28 February",
+      "description": "Monthly Apartment Rent",
+      "moneyOut": "987.33",
+      "moneyIn": null,
+      "balance": "44.079.83"
+    }
+  ],
+  "customerAddress": "Mr John Smith\n5 Any Road\nRandomford\nAnyshire\nYZ985XY"
+}
+```
+----------------------------------------
