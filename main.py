@@ -26,6 +26,7 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
     retriever = BankInfoRetrieval()
     latest_data = retriever.retrieve_latest_info()
     transactions = find_transactions(json.dumps(latest_data, indent=4))
+    print(transactions)
     insights = find_insights(transactions)
     fraud_detection_result = detect_fraud_all_transactions(transactions)
 

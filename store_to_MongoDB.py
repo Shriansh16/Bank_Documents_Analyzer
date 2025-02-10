@@ -1,5 +1,6 @@
 import json
 from pymongo import MongoClient
+import os
 import re
 from pdf_extractor import PDFExtractor  
 from dotenv import load_dotenv

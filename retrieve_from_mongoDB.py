@@ -1,5 +1,6 @@
 import json
 from pymongo import MongoClient
+import os
 
 class BankInfoRetrieval:
     def __init__(self, db_name="Bank", collection_name="informations"):

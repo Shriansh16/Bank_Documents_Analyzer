@@ -4,15 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Data Processing</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container Styling */
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        /* Headings */
+        h1 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #007BFF;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* File Upload Styling */
+        .file-upload-label {
+            display: inline-block;
+            background: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .file-upload-label:hover {
+            background: #0056b3;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Button Styling */
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            border: none;
+            background: #28a745;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Intelligent Banking Data Processing & Risk Assessment</h1>
-        <h2>Upload your Bank Document</h2>
+        <h1>Intelligent Banking Data Processing</h1>
+        <h2>Upload Your Bank Document</h2>
         <form action="/upload/" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".pdf" required>
-            <button type="submit">Upload</button>
+            <label for="file-upload" class="file-upload-label">
+                Choose a PDF File
+            </label>
+            <input id="file-upload" type="file" name="file" accept=".pdf" required>
+            <button type="submit">Upload & Analyze</button>
         </form>
     </div>
 </body>
