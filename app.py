@@ -1,6 +1,7 @@
 import os
 from store_to_MongoDB import BankInfoStorage
 from retrieve_from_mongoDB import BankInfoRetrieval
+from credit_score_calculator import *
 from fraud_detector import *
 import tempfile
 import streamlit as st
@@ -26,5 +27,10 @@ if uploaded_file:
    fraud_detection_result = detect_fraud_all_transactions(transactions)
    st.subheader("Fraud Detection result:")
    st.write(fraud_detection_result)
+   structured=structured_transactions(transactions)
+   st.write(structured)
+   print(structured)
+   plot_financial_graph(structured)
+   
 
 

@@ -1,7 +1,10 @@
 import os
 from groq import Groq
 import json
+import re
 from retrieve_from_mongoDB import BankInfoRetrieval
+import matplotlib.pyplot as plt
+from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -65,14 +68,17 @@ def detect_fraud_all_transactions(transactions):
     return completion.choices[0].message.content
 
 def find_insights(transactions):
-    prompt="""You are an expert financial analyst AI. Your task is to analyze user transaction data and generate structured financial insights. Your response should be well-structured and insightful.
-    Objectives:
-1. **Weekly Spending Trends:** Provide a summary of spending for each week.
-2. **Monthly Spending Trends:** Analyze spending patterns across months.
-3. **Category-wise Breakdown:** Highlight major expense categories.
-4. **High-Spending Alerts:** Identify any unusually high transactions.
-5. **Recurring Transactions:** Detect subscriptions, EMIs, and fixed expenses.
-6. **Savings Analysis:** Compare income vs. expenses and suggest improvements.
+    prompt="""You are a financial assistant analyzing a user's bank statement. 
+
+Provide a summary of key financial insights, including:
+- Total income and total expenses.
+- Unusual spending behavior.
+- Key spending trends.
+- Any notable financial changes.
+- Recommendations for improving financial health.
+
+Return a detailed but concise financial summary.
+
 """
     client = Groq(api_key=os.getenv('GROQ_API_KEY'))
     completion = client.chat.completions.create(
@@ -93,7 +99,79 @@ def find_insights(transactions):
         )
     return completion.choices[0].message.content
 
-if __name__ == "__main__":
+def structured_transactions(transactions):
+    prompt="""You are given a list of financial transactions in JSON format.
+           Extract and structure the data as follows:
+           1. Group transactions by date.
+           2. For each date, calculate:
+             - "money_spent": Total sum of all "money_out" values for that date.
+             - "money_credited": Total sum of all "money_in" values for that date.
+             - "final_balance": The last available "balance" for that date.
+           Output only a valid JSON array without explanations or additional text.
+
+           Example output:
+           [
+             {
+               "date": "DD Month 2024",
+               "money_spent": XX.XX,
+               "money_credited": XX.XX,
+               "final_balance": XX.XX
+             }
+           ]
+           """
+    client = Groq(api_key=os.getenv('GROQ_API_KEY'))
+    completion = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system", 
+                    "content": prompt
+                },
+                {
+                    "role": "user", 
+                    "content": f"""Here is the transaction history:
+                                    {transactions}"""
+                }
+            ],
+            temperature=0.3,
+            top_p=1
+        )
+    return completion.choices[0].message.content
+
+def plot_financial_graph(json_data):
+    # Load data from JSON
+    data = json.loads(json_data)
+    
+    # Convert dates to datetime objects
+    dates = [datetime.strptime(entry["date"], "%d %B %Y") for entry in data]
+    money_spent = [entry["money_spent"] for entry in data]
+    money_credited = [entry["money_credited"] for entry in data]
+    final_balance = [entry["final_balance"] for entry in data]
+    
+    # Create figure and axis
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    
+    # Plot money spent and credited
+    ax1.bar(dates, money_spent, color='red', label="Money Spent", alpha=0.7)
+    ax1.bar(dates, money_credited, color='green', label="Money Credited", alpha=0.7, bottom=money_spent)
+    ax1.set_ylabel("Amount ($)")
+    ax1.set_xlabel("Date")
+    ax1.legend(loc="upper left")
+    
+    # Create second y-axis for balance
+    ax2 = ax1.twinx()
+    ax2.plot(dates, final_balance, color='blue', marker='o', linestyle='-', label="Final Balance")
+    ax2.set_ylabel("Final Balance ($)")
+    ax2.legend(loc="upper right")
+    
+    # Formatting
+    plt.xticks(rotation=45)
+    plt.title("Financial Transactions")
+    plt.grid(True)
+    plt.show()
+    
+
+"""if __name__ == "__main__":
     retriever = BankInfoRetrieval()
     latest_data = retriever.retrieve_latest_info()
     latest_data=json.dumps(latest_data, indent=4)
@@ -107,5 +185,8 @@ if __name__ == "__main__":
         print("." * 20)
         insights=find_insights(transactions)
         print(insights)
+        print("." * 20)
+        structured=structured_transactions(transactions)
+        print(structured)
     else:
-        print("No data found.")
+        print("No data found.")"""

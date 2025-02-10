@@ -59,11 +59,13 @@ Using the provided financial data, calculate the following metrics and return th
     return completion.choices[0].message.content
 
 
-def info_related_to_transactions(transactions):
+def calculate_credit_score(info):
 
     prompt = """You are a financial assistant specializing in credit score evaluation.  
                 Calculate the credit score based on the following financial data.  
-                Return only the calculated credit score as a numeric value without any additional text, explanation, or formatting.  
+                Additionally, provide an explanation of the credit score reasoning, highlighting key factors that influenced the score.  
+                Explain in a clear and concise manner, identifying strengths, weaknesses, and possible improvements based on the financial data.  
+                Do not mention any missing information or data gaps.
              """
 
     client = Groq(api_key=os.getenv('GROQ_API_KEY'))
@@ -76,8 +78,7 @@ def info_related_to_transactions(transactions):
                 },
                 {
                     "role": "user", 
-                    "content": f"""Here is the transaction history:
-                                    {transactions}"""
+                    "content": f"""{info}"""
                 }
             ],
             temperature=0.3,
@@ -195,3 +196,5 @@ if __name__=="__main__":
 ]"""
     info=info_related_to_transactions(transactions)
     print(info)
+    credit_score_insights=calculate_credit_score(info)
+    print(credit_score_insights)
