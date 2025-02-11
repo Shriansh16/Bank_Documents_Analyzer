@@ -28,9 +28,8 @@ if uploaded_file:
    st.subheader("Fraud Detection result:")
    st.write(fraud_detection_result)
    structured=structured_transactions(transactions)
-   st.write(structured)
-   print(structured)
    plot_financial_graph(structured)
+   
    
 
 

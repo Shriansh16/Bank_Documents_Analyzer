@@ -2,6 +2,7 @@ import os
 from groq import Groq
 import json
 import re
+import streamlit as st
 from retrieve_from_mongoDB import BankInfoRetrieval
 import matplotlib.pyplot as plt
 from datetime import datetime
@@ -168,7 +169,7 @@ def plot_financial_graph(json_data):
     plt.xticks(rotation=45)
     plt.title("Financial Transactions")
     plt.grid(True)
-    plt.show()
+    st.pyplot(fig)
     
 
 """if __name__ == "__main__":
