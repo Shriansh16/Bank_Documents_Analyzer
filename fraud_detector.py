@@ -108,7 +108,7 @@ def structured_transactions(transactions):
              - "money_credited": Total sum of all "money_in" values for that date.
              - "final_balance": The last available "balance" for that date.
            Output only a valid JSON array without explanations or additional text.
-
+           Format the date as "DD Month YYYY". If the year is missing, assume 2024.
            Example output:
            [
              {
