@@ -60,7 +60,6 @@ async def upload_file(file: UploadFile = File(...)):
 
         # Extract insights
         insights = find_insights(transactions)
-        structured = structured_transactions(transactions)
         fraud_detection_result = detect_fraud_all_transactions(transactions)
         overall_fraud_result=fraud_result(fraud_detection_result)
         if overall_fraud_result=="Fraud":
@@ -74,7 +73,6 @@ async def upload_file(file: UploadFile = File(...)):
 
         return {
             "insights": insights,
-            "structured_data": structured,
             "fraud_detection": fraud_detection_result,
             "credit_score": credit_score_insights
         }
