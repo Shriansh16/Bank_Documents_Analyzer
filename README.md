@@ -79,7 +79,7 @@ It is used to run the FastAPI application locally or on a server.
 ## How to run?
 ### Follow these steps to run the project:
 step 1.  Start the Backend Servers
- Run the following commands in your terminal to start both backend service:
+ Run the following command in your terminal to start the backend service:                                                                         
  uvicorn main:app 
 
 Step 2. Open the Frontend
