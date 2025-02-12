@@ -3,98 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bank Data Processing</title>
+    <title>Intelligent Banking Assistant</title>
     <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Body Styling */
         body {
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
-        /* Container Styling */
         .container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
+            display: flex;
+            gap: 20px;
         }
-
-        /* Headings */
-        h1 {
-            color: #333;
-            font-size: 22px;
+        .left-panel {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .right-panel {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
             margin-bottom: 10px;
         }
-
-        h2 {
-            color: #007BFF;
-            font-size: 18px;
-            margin-top: 10px;
-        }
-
-        /* File Upload Styling */
-        .file-upload-label {
-            display: inline-block;
-            background: #007BFF;
-            color: white;
-            padding: 10px 15px;
+        .message {
+            margin: 10px 0;
+            padding: 10px;
             border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.3s ease-in-out;
         }
-
-        .file-upload-label:hover {
-            background: #0056b3;
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: 20%;
         }
-
-        input[type="file"] {
-            display: none;
+        .assistant-message {
+            background-color: #f5f5f5;
+            margin-right: 20%;
         }
-
-        /* Button Styling */
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 8px;
+        }
         button {
-            margin-top: 20px;
-            padding: 10px 15px;
-            border: none;
-            background: #28a745;
+            padding: 8px 16px;
+            background-color: #2196f3;
             color: white;
-            font-size: 16px;
-            border-radius: 5px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: 0.3s ease-in-out;
         }
-
         button:hover {
-            background: #218838;
+            background-color: #1976d2;
+        }
+        .results {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
+    <h1>Intelligent Banking Data Processing & Risk Assessment</h1>
+    
     <div class="container">
-        <h1>Intelligent Banking Data Processing</h1>
-        <h2>Upload Your Bank Document</h2>
-        <form action="/upload/" method="post" enctype="multipart/form-data">
-            <label for="file-upload" class="file-upload-label">
-                Choose a PDF File
-            </label>
-            <input id="file-upload" type="file" name="file" accept=".pdf" required>
-            <button type="submit">Upload & Analyze</button>
-        </form>
+        <div class="left-panel">
+            <h2>Upload Bank Document</h2>
+            <input type="file" id="pdfFile" accept=".pdf" />
+            <button onclick="uploadFile()">Upload</button>
+            
+            <div class="results">
+                <h3>Financial Insights</h3>
+                <div id="insights"></div>
+                
+                <h3>Fraud Detection Result</h3>
+                <div id="fraudDetection"></div>
+                
+                <h3>Credit Score Calculation</h3>
+                <div id="creditScore"></div>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <h2>Chat with Assistant</h2>
+            <div class="chat-container" id="chatContainer"></div>
+            <div class="input-container">
+                <input type="text" id="userInput" placeholder="Type your message..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Generate a random session ID for the chat
+        const sessionId = Math.random().toString(36).substring(7);
+        
+        async function uploadFile() {
+            const fileInput = document.getElementById('pdfFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('http://localhost:8000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                // Display results
+                document.getElementById('insights').innerHTML = `<pre>${JSON.stringify(data.insights, null, 2)}</pre>`;
+                document.getElementById('fraudDetection').innerHTML = `<pre>${JSON.stringify(data.fraud_detection, null, 2)}</pre>`;
+                document.getElementById('creditScore').innerHTML = `<pre>${JSON.stringify(data.credit_score, null, 2)}</pre>`;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while uploading the file');
+            }
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
+            
+            if (!message) return;
+
+            // Add user message to chat
+            addMessageToChat(message, true);
+            userInput.value = '';
+
+            try {
+                const response = await fetch('http://localhost:8000/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Add assistant response to chat
+                addMessageToChat(data.response, false);
+            } catch (error) {
+                console.error('Error:', error);
+                addMessageToChat('Sorry, an error occurred. Please try again.', false);
+            }
+        }
+
+        function addMessageToChat(message, isUser) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+            messageDiv.textContent = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Handle Enter key in input field
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>

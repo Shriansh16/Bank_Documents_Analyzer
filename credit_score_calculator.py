@@ -87,7 +87,7 @@ def calculate_credit_score(info):
     return completion.choices[0].message.content
 
 
-if __name__=="__main__":
+"""if __name__=="__main__":
     transactions= """[
     {
         "date": "1 February",
@@ -197,4 +197,4 @@ if __name__=="__main__":
     info=info_related_to_transactions(transactions)
     print(info)
     credit_score_insights=calculate_credit_score(info)
-    print(credit_score_insights)
+    print(credit_score_insights)"""

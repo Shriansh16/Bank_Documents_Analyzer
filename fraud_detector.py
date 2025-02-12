@@ -35,23 +35,31 @@ def find_transactions(message: str) -> str:
 def detect_fraud_all_transactions(transactions):
 
     prompt = f"""
-    You are a financial fraud detection AI. Analyze the bank statement below and identify any suspicious transactions.
-    Consider risk factors such as:
-    - Large or unusual amounts
-    - Transactions at unrecognized locations
-    - Unusual transaction times
-    - Rapid withdrawals
-    - Duplicate payments
-    - Sudden changes in spending behavior
+    You are an AI fraud detection expert analyzing financial transactions. 
+Identify fraudulent activities based on:
+- Large or unusual transactions compared to past spending.
+- Rapid withdrawals or multiple transfers in a short period.
+- Transactions at unusual times or locations.
+- Sudden changes in spending behavior.
 
-    Provide:
-    1. A list of suspicious transactions with explanations.
-    2. A summary of any unusual spending patterns.
-    3. A fraud risk score (0-100) for this account.
+### **Fraud Detection Report**  
+
+**1. Transaction Risk Scores:**  
+   - Assign a fraud risk score (0-100) to each transaction.  
+
+**2. High-Risk Transactions (Score > 80):**  
+   - List transactions that are highly suspicious.  
+   - Provide a brief reason for each flagged transaction.  
+
+**3. Unusual Spending Patterns:**  
+   - Summarize any deviations from normal spending behavior.  
+
+**4. Overall Fraud Risk Score:**  
+   - Calculate an overall fraud risk score (0-100) based on detected anomalies. 
     """
     client = Groq(api_key=os.getenv('GROQ_API_KEY'))
     completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {
                     "role": "system", 
@@ -83,7 +91,7 @@ Return a detailed but concise financial summary.
 """
     client = Groq(api_key=os.getenv('GROQ_API_KEY'))
     completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {
                     "role": "system", 
