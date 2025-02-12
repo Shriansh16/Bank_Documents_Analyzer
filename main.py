@@ -7,6 +7,7 @@ import os
 from pydantic import BaseModel
 from store_to_MongoDB import BankInfoStorage
 from retrieve_from_mongoDB import BankInfoRetrieval
+from fraud_alert import *
 from credit_score_calculator import *
 from fraud_detector import *
 from langchain.chains import ConversationChain
@@ -61,6 +62,10 @@ async def upload_file(file: UploadFile = File(...)):
         insights = find_insights(transactions)
         structured = structured_transactions(transactions)
         fraud_detection_result = detect_fraud_all_transactions(transactions)
+        overall_fraud_result=fraud_result(fraud_detection_result)
+        if overall_fraud_result=="Fraud":
+            fraud_user_info_result=fraud_user_info(latest_data)
+            send_email(fraud_user_info_result)
         info = info_related_to_transactions(transactions)
         credit_score_insights = calculate_credit_score(info)
 
@@ -98,11 +103,11 @@ async def chat_endpoint(chat_request: ChatRequest):
         retriever = BankInfoRetrieval()
         latest_data = retriever.retrieve_latest_info()
         transactions = find_transactions(json.dumps(latest_data, indent=4))
-        
         insights = find_insights(transactions)
         fraud_detection_result = detect_fraud_all_transactions(transactions)
         info = info_related_to_transactions(transactions)
         credit_score_insights = calculate_credit_score(info)
+
 
         # Create system message template
         system_msg_template = SystemMessagePromptTemplate.from_template(
