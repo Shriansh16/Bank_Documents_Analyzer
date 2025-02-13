@@ -39,7 +39,7 @@ Not fraud
 
 def fraud_user_info(records):
     prompt="""Extract all user-related information, including name, account details, and contact details, from the given JSON file. 
-Return the extracted information in a structured format 
+Return the extracted information in a structured format. Return only the user-related information without any additional details and codes.
 
 """
     client = Groq(api_key=os.getenv('GROQ_API_KEY'))

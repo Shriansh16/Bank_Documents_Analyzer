@@ -121,7 +121,7 @@ def structured_transactions(transactions):
            Example output:
            [
              {
-               "date": "DD Month 2024",
+               "date": "1 February 2024",
                "money_spent": XX.XX,
                "money_credited": XX.XX,
                "final_balance": XX.XX
@@ -145,7 +145,10 @@ def structured_transactions(transactions):
             temperature=0.3,
             top_p=1
         )
-    return completion.choices[0].message.content
+    op=completion.choices[0].message.content    
+    op=re.sub(r"```json\n|\n```", "",op).strip()
+    print(op)
+    return op
 
 def plot_financial_graph(json_data):
     # Load data from JSON

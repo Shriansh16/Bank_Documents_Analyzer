@@ -14,6 +14,7 @@ from langchain.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder
 )
+from fraud_alert import *
 from streamlit_chat import message
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
@@ -41,6 +42,10 @@ if uploaded_file and "file_processed" not in st.session_state:
     st.session_state["insights"] = find_insights(transactions)
     st.session_state["structured"] = structured_transactions(transactions)
     st.session_state["fraud_detection_result"] = detect_fraud_all_transactions(transactions)
+    overall_fraud_result=fraud_result(st.session_state["fraud_detection_result"])
+    if overall_fraud_result=="Fraud":
+            fraud_user_info_result=fraud_user_info(latest_data)
+            send_email(fraud_user_info_result)
     st.session_state["info"] = info_related_to_transactions(transactions)
     st.session_state["credit_score_insights"] = calculate_credit_score(st.session_state["info"])
 
