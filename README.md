@@ -77,10 +77,18 @@ It is used to run the FastAPI application locally or on a server.
 9. fraud_alert.py – Sends fraud alerts to the admin if fraud is detected.
 
 ## How to run?
+First, create a file named .env and add the following lines:                                        
+1. GROQ_API_KEY="YOUR GROQ API KEY"
+2. gemini_api_key="YOUR GEMINI API KEY"
 ### Follow these steps to run the project:
-step 1.  Start the Backend Servers
- Run the following command in your terminal to start the backend service:                                                                         
- uvicorn main:app 
+step 1.  Start the Backend Servers                                                     
+ Run the following command in your terminal to start the backend                          service:                                                                         
+ uvicorn main:app                                                                
 
 Step 2. Open the Frontend
- Once the backend is running, open index.html in your browser.                                                                       
+ Once the backend is running, open index.html in your browser.   
+
+
+ ## OR directly run the streamlit app      
+
+ streamlit run app.py                                                              
